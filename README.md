@@ -1,2 +1,4 @@
 # nasmLinux
-Códigos fontes da disciplina arquitetura de computadores
+Códigos fontes desenvolvidos durante a disciplina arquitetura de computadores
+
+**Foram desenvolvidos para funcionar em uma arquitetura do sistema operacional Linux
