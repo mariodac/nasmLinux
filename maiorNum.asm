@@ -7,9 +7,9 @@ section .data
 ;dq - Define Quad Word - 8 bytes
 x dd "7"
 y dd "5"
-msg1 db 'X igual que Y', 0xa
+msg1 db 'X MAIOR que Y', 0xa
 len1 equ $ - msg1
-msg2 db 'Y diferente que X', 0xa
+msg2 db 'Y MAIOR que X', 0xa
 len2 equ $ - msg2
 
 section .text

@@ -1,7 +1,11 @@
-; ler 4 numeros (de 0 a 9) e realizar a média
+; ler 4 numeros (de 0 a 9) e realizar a média e exibir aprovado se média maior que 2
+; ou exibir reprovado se média menor que 2
+; foi adicionado uma label para realizar a média
 section .data
-    tit db  10, '+-------+',10,'| MÉDIA |', 10, '+-------+', 0xa
+    tit dd 30, '+----------------------------+',30,'| MÉDIA |', 30, '+----------------------------+', 0xa
     ltit equ $ - tit
+    tit2 dd 30, '+----------------------------+',30,'| RESULTADO |', 30, '+----------------------------+', 0xa
+    ltit2 equ $-tit2
     msg2 db 10, 'Digite N1: ', 0
     lmsg2 equ $-msg2
     msg3 db 10, 'Digite N2: ', 0
@@ -12,6 +16,10 @@ section .data
     lmsg5 equ $-msg5
     msg6 db 10, 'A média foi: ', 0
     lmsg6 equ $-msg6
+    msg7 db 10, 'ALUNO FOI APROVADO!', 0
+    lmsg7 equ $-msg7
+    msg8 db 10, 'ALUNO FOI REPROVADO!', 0
+    lmsg8 equ $-msg8
     linha db 10, 0
     llinha equ $-linha
     quantidade db 10, '4'
@@ -24,7 +32,7 @@ section .bss
     result resb 10
     result2 resb 10
     result3 resb 10
-    media resb 10
+    media resd 10
 
 section .text
     global _start
@@ -66,13 +74,21 @@ _start:
     mov edx, 10
     call leitura
 
+    mov ecx, tit2
+    mov edx, ltit2
+    call exibir
+
     mov ecx, msg6
     mov edx, lmsg6
     call exibir
 
-    call mediaArimetmedia
+    call soma
 
-mediaArimetmedia:
+    call resultado
+
+    jmp exit
+
+soma:
     ;add eax,ebx
     ;move os numeros lidos para eax e ebx
     mov eax, [n1]
@@ -84,7 +100,7 @@ mediaArimetmedia:
     add eax, ebx
     ; converte de inteiro para soma
     add eax, '0'
-    ; move o conteudo de eax para result
+    ; move o conteudo de eax para result contendo a soma dos primeiros dois numeros
     mov [result], eax
 
     ;add eax,ebx
@@ -98,10 +114,11 @@ mediaArimetmedia:
     add eax, ebx
     ; converte de inteiro para soma
     add eax, '0'
-    ; move o conteudo de eax para result2
+    ; move o conteudo de eax para result2 contendo a soma dos ultimos dois numeros
     mov [result2], eax
 
-    ;move os resultados das duas somas para eax e ebx
+    ;add eax,ebx
+    ;move os numeros lidos para eax e ebx
     mov eax, [result]
     mov ebx, [result2]
     ; converte de string para inteiro
@@ -111,11 +128,13 @@ mediaArimetmedia:
     add eax, ebx
     ; converte de inteiro para soma
     add eax, '0'
-    ; move o conteudo de eax para result contendo a soma dos 4 numeros
+    ; move o conteudo de eax para result3 contendo a soma dos 4 números
     mov [result3], eax
 
-    ; realiza media
-    ;move o resultado da soma para al e divide por 4
+    jmp mediaArimetmedia
+
+mediaArimetmedia:
+    ;move resultado da soma para al e realiza a divisão
     mov al, [result3]
     mov bl, '4'
     mov dx, 0
@@ -134,7 +153,33 @@ mediaArimetmedia:
     mov ecx, media
     mov edx, 3
     call exibir
+    ret
+
+resultado:
+    mov eax, DWORD [media]
+    mov edx, '2'
+    cmp eax, edx
+    jg aprovado
+    jmp reprovado
+
+aprovado:
+    mov ecx, linha
+    mov edx, llinha
+    call exibir
+    mov ecx, msg7
+    mov edx, lmsg7
+    call exibir
     jmp exit
+
+reprovado:
+    mov ecx, linha
+    mov edx, llinha
+    call exibir
+    mov ecx, msg8
+    mov edx, lmsg8
+    call exibir
+    jmp exit
+    
 
 exibir:
     mov eax, 4

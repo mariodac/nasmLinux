@@ -1,4 +1,4 @@
-; resolução exercicio 3. exibir mensagens utilizando labels e jumpers
+; resolução exercicio 3. Comparar duas strings utilizando labels e jumpers
 
 SYS_EXIT    equ     1
 SYS_WRITE   equ     4
